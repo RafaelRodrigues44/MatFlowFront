@@ -10,16 +10,12 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('@MaltFlow:token');
-
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 api.interceptors.response.use(
@@ -28,12 +24,10 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('@MaltFlow:token');
       localStorage.removeItem('@MaltFlow:user');
-      
       if (!window.location.pathname.includes('/login')) {
         window.location.href = '/login';
       }
     }
-
     return Promise.reject(error);
   }
 );

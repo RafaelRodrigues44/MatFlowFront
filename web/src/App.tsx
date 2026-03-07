@@ -3,6 +3,7 @@ import { Login } from './pages/login/page';
 import { MainLayout } from './components/layout/page';
 import { DashboardPage } from './pages/dashboard/page';
 import { InventoryPage } from './pages/inventory/page';
+import { RegisterPage } from './pages/register/page'; 
 
 import { ProtectedRoute } from './components/ProtectedRoute';
 
@@ -16,7 +17,7 @@ export function App() {
           <Route element={<MainLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/inventory" element={<InventoryPage />} />
-            {/* Outras rotas internas aqui */}
+            <Route path="/register" element={<RegisterPage />} />
           </Route>
         </Route>
 

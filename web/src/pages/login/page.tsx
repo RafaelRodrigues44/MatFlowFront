@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogIn, Lock, User as UserIcon } from 'lucide-react';
+import { Lock, User as UserIcon, Database } from 'lucide-react';
 import api from '../../services/api';
 import { useAuthStore } from '../../store/useAuthStore';
 
 export const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [database, setDatabase] = useState('MaltFlow_Sorocaba');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
@@ -25,75 +26,97 @@ export const Login = () => {
       setAuth(user, access_token);
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Erro ao conectar com o servidor da Barley.');
+      setError(err.response?.data?.message || 'Credenciais inválidas para a base selecionada.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-2xl overflow-hidden">
-        <div className="bg-blue-700 p-8 text-center">
-          <h1 className="text-2xl font-bold text-white tracking-tight">MaltFlow ERP</h1>
-          <p className="text-blue-100 text-sm mt-2">Barley Importadora - Regional Sorocaba</p>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4 font-sans text-gray-700">
+      <div className="max-w-[450px] w-full bg-white rounded shadow-sm border border-gray-200 overflow-hidden px-10 py-12">
+        
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center mb-2">
+             <div className="bg-gray-800 p-1 rounded-sm mr-2">
+                <div className="w-6 h-6 border-2 border-white rounded-full flex items-center justify-center">
+                   <div className="w-2 h-2 bg-white rounded-full"></div>
+                </div>
+             </div>
+             <span className="text-6xl font-light text-gray-700 tracking-tight">MaltFlow</span>
+          </div>
+          <h2 className="text-2xl font-light text-gray-400 mb-1 tracking-tight">Linha Regional</h2>
+          <p className="text-cyan-600 text-xl font-light">Unidade Sorocaba</p>
         </div>
         
-        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 text-red-700 text-sm">
+            <div className="text-red-500 text-xs text-center font-medium bg-red-50 py-2 rounded border border-red-100 italic">
               {error}
             </div>
           )}
           
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Usuário</label>
-            <div className="relative">
-              <UserIcon className="absolute left-3 top-3 text-slate-400" size={18} />
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                placeholder="Ex: admin"
-                required
-              />
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none border-r border-gray-200 my-2 px-3">
+              <UserIcon className="text-cyan-600" size={20} />
             </div>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full pl-16 pr-4 py-3 border border-gray-300 rounded text-gray-600 placeholder-gray-400 focus:outline-none focus:border-cyan-500 transition-colors"
+              placeholder="Usuário ou E-mail"
+              required
+            />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Senha</label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3 text-slate-400" size={18} />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                placeholder="••••••••"
-                required
-              />
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none border-r border-gray-200 my-2 px-3">
+              <Lock className="text-cyan-600" size={20} />
             </div>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full pl-16 pr-4 py-3 border border-gray-300 rounded text-gray-600 placeholder-gray-400 focus:outline-none focus:border-cyan-500 transition-colors"
+              placeholder="Senha de Acesso"
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none border-r border-gray-200 my-2 px-3">
+              <Database className="text-cyan-600" size={20} />
+            </div>
+            <select
+              value={database}
+              onChange={(e) => setDatabase(e.target.value)}
+              className="w-full pl-16 pr-4 py-3 border border-gray-300 rounded text-gray-600 bg-white focus:outline-none focus:border-cyan-500 appearance-none transition-colors"
+            >
+              <option value="MaltFlow_Sorocaba">MaltFlow_Sorocaba (Produção)</option>
+              <option value="MaltFlow_HML">MaltFlow_HML (Homologação)</option>
+            </select>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded flex items-center justify-center transition-colors disabled:opacity-50"
+            className="w-48 mx-auto block bg-[#009cae] hover:bg-[#008ba0] text-white text-lg font-normal py-3 rounded shadow-sm transition-all mt-6 uppercase tracking-widest text-sm"
           >
-            {loading ? 'Autenticando...' : (
-              <>
-                <LogIn size={18} className="mr-2" />
-                Acessar Sistema
-              </>
-            )}
+            {loading ? 'Autenticando...' : 'Entrar'}
           </button>
         </form>
-        
-        <div className="bg-slate-50 p-4 text-center border-t border-slate-100">
-          <p className="text-[10px] text-slate-400 uppercase tracking-widest font-medium">
-            MaltFlow v1.0 • Mind Stack Engine
-          </p>
+      </div>
+
+      <div className="mt-6 w-full max-w-4xl border-t border-gray-200 pt-6">
+        <div className="flex flex-col items-center">
+           <div className="flex items-center text-gray-400 mb-1">
+              <div className="w-5 h-5 border border-gray-300 rounded-full flex items-center justify-center mr-1">
+                 <div className="w-1.5 h-1.5 bg-gray-300 rounded-full"></div>
+              </div>
+              <span className="text-[10px] font-bold tracking-widest uppercase">MaltFlow Engine</span>
+           </div>
+           <p className="text-[10px] text-gray-400">Barley Importadora • Regional Sorocaba • v1.2.0</p>
         </div>
       </div>
     </div>
