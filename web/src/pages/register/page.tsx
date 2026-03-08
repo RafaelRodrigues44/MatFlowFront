@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { User as UserIcon, Lock, ArrowLeft, Settings, UserPlus } from 'lucide-react';
+import { User as UserIcon, Lock, Settings, UserPlus } from 'lucide-react';
 import api from '../../services/api';
 
 type RoleOption = {
@@ -8,7 +7,11 @@ type RoleOption = {
   label: string;
 };
 
-export const RegisterPage = () => {
+interface RegisterProps {
+  onSuccess: () => void;
+}
+
+export const RegisterPage = ({ onSuccess }: RegisterProps) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -18,7 +21,6 @@ export const RegisterPage = () => {
   const [roles, setRoles] = useState<RoleOption[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     const loadRoles = async () => {
@@ -45,8 +47,7 @@ export const RegisterPage = () => {
         password: formData.password,
         role: formData.role
       });
-      alert('Usuário registrado com sucesso!');
-      navigate('/dashboard');
+      onSuccess();
     } catch (err: any) {
       setError(err.response?.data?.message || 'Erro ao registrar usuário.');
     } finally {
@@ -55,24 +56,7 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto animate-in fade-in duration-500">
-      <div className="flex justify-between items-end mb-6">
-        <div>
-          <h2 className="text-2xl font-light text-gray-800 tracking-tighter">
-            Novo Usuário
-          </h2>
-          <p className="text-[10px] font-bold text-cyan-600 uppercase tracking-widest">
-            Tabela ZUR - Controle de Acessos
-          </p>
-        </div>
-        <Link
-          to="/dashboard"
-          className="text-gray-400 hover:text-cyan-600 text-xs flex items-center gap-1 transition-colors font-sans"
-        >
-          <ArrowLeft size={14} /> Voltar ao Painel
-        </Link>
-      </div>
-
+    <div className="animate-in fade-in duration-500">
       <div className="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
         <div className="p-6 border-b border-gray-50 bg-gray-50/50">
           <div className="flex items-center gap-3">
