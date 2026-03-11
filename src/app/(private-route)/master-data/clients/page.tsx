@@ -1,15 +1,15 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Building2, MapPin, FileText, MoreHorizontal } from 'lucide-react';
-import api from '../../../services/api';
+import api from '../../../../services/api';
 import { AddClientModal } from './add-client-modal';
 import { UpdateClientModal } from './update-client-modal';
-import { useSearchStore } from '../../../store/useSearchStore';
+import { useSearchStore } from '../../../../store/useSearchStore';
 import { 
   DataTable, 
   Loading, 
   PageControl,
   Pagination
-} from '../../../components/shared';
+} from '../../../../components/shared';
 
 export const ClientsPage = () => {
   const [clients, setClients] = useState<any[]>([]);

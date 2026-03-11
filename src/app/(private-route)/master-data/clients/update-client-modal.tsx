@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Building2, Save, MapPin, Lock } from 'lucide-react';
-import api from '../../../services/api';
-import { Modal } from '../../../components/ui/modal';
+import api from '../../../../services/api';
+import { Modal } from '../../../../components/ui/modal';
 
 interface UpdateClientModalProps {
   client: any;

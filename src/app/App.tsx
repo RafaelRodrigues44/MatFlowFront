@@ -4,7 +4,7 @@ import Layout from './layout';
 import AuthLayout from './(auth)/login/layout';
 import LoginPage from './(auth)/login/page';
 import { DashboardPage } from './(private-route)/dashboard/page';
-import { ClientsPage } from './(private-route)/clients/page'; 
+import { ClientsPage } from './(private-route)/master-data/clients/page'; 
 import { useAuthStore } from '../store/useAuthStore';
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
@@ -16,7 +16,6 @@ export function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Rota Pública */}
         <Route
           path="/login"
           element={
@@ -26,7 +25,6 @@ export function App() {
           }
         />
 
-        {/* Rotas Privadas (Nested Pattern) */}
         <Route
           path="/"
           element={
@@ -35,14 +33,12 @@ export function App() {
             </ProtectedRoute>
           }
         >
-          {/* Redireciona a raiz para o dashboard automaticamente */}
           <Route index element={<Navigate to="/dashboard" replace />} />
           
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="clients" element={<ClientsPage />} /> 
           <Route path="products" element={<div>Catálogo de Produtos</div>} />
           
-          {/* Fallback para rotas inexistentes dentro do painel */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>
       </Routes>
